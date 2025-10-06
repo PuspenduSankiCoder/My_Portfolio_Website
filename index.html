@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puspendu Sanki - Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- <link rel="stylesheet" href="Style.css"> -->
-     <style>
-        
+    <style>
+
         /* CSS Variables for Theming */
         :root {
             --primary-color: #64b5f6;
@@ -207,9 +206,15 @@
         .hero-image {
             flex: 1;
             text-align: center;
+            /* Added flex-shrink for better mobile scaling */
+            flex-shrink: 0; 
         }
 
+        /* **MODIFIED STYLE FOR IMAGE** */
         .hero-image img {
+            width: 350px; /* Set a specific size for the circular image */
+            height: 350px;
+            object-fit: cover; /* Ensures the image covers the area without distortion */
             max-width: 100%;
             border-radius: 50%;
             border: 5px solid var(--primary-color);
@@ -536,13 +541,12 @@
         .fade-in {
             animation: fadeIn 1s ease forwards;
         }
-    
-     </style>
+
+    </style>
 
 </head>
 
 <body>
-    <!-- Header Section -->
     <header>
         <div class="container">
             <nav>
@@ -571,7 +575,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
@@ -585,15 +588,11 @@
                     </div>
                 </div>
                 <div class="hero-image">
-                    <div class="image-placeholder"
-                        style="width: 350px; height: 350px; background-color: #64b5f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
-                       Puspendu Sanki
-                    </div>
+                    <img src="portfolio perfect.jpg" alt="Puspendu Sanki's Professional Portrait">
                 </div>
             </div>
         </div>
     </section>
-    <!-- About Section -->
     <section id="about">
         <div class="container">
             <h2>About Me</h2>
@@ -604,7 +603,7 @@
                     <p>My goal is to build secure applications that protect user data while providing excellent user
                         experiences. I have hands-on experience in vulnerability assessment, penetration testing, and
                         data protection techniques.</p>
-                  <a href="Puspendu_Sanki.pdf" class="btn" download>Download Resume</a>
+                    <a href="Puspendu_Sanki.pdf" class="btn" download>Download Resume</a>
                 </div>
                 <div>
                     <h3>Personal Information</h3>
@@ -618,7 +617,6 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section id="skills" style="background-color: var(--card-bg);">
         <div class="container">
             <h2>My Skills</h2>
@@ -647,7 +645,6 @@
         </div>
     </section>
 
-    <!-- Experience Section -->
     <section id="experience">
         <div class="container">
             <h2>Work Experience</h2>
@@ -674,7 +671,6 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" style="background-color: var(--card-bg);">
         <div class="container">
             <h2>My Projects</h2>
@@ -713,7 +709,6 @@
         </div>
     </section>
 
-    <!-- Education Section -->
     <section id="education">
         <div class="container">
             <h2>Education</h2>
@@ -752,7 +747,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact">
         <div class="container">
             <h2>Get In Touch</h2>
@@ -764,7 +758,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="social-links">
@@ -775,32 +768,51 @@
             <p class="copyright">© 2023 Puspendu Sanki. All rights reserved.</p>
         </div>
     </footer>
-  <!-- <script src="Script.js"></script> -->
-   <script>
-     
+    <script>
+
         // Dark/Light Mode Toggle
         const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = themeToggle.querySelector('i');
+        const themeIcon = themeToggle.parentElement.querySelector('.theme-icon:last-child i'); // Corrected icon selection
 
-        themeToggle.addEventListener('click', () => {
+        themeToggle.addEventListener('change', () => { // Changed to 'change' for checkbox
             document.body.classList.toggle('dark-mode');
-            if (document.body.classList.contains('dark-mode')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            
+            const sunIcon = document.querySelector('.theme-switch-wrapper .fa-sun');
+            const moonIcon = document.querySelector('.theme-switch-wrapper .fa-moon');
+
+            // Swap icons based on mode
+            if (isDarkMode) {
+                sunIcon.style.color = 'var(--text-color)'; // Make the sun visible
+                moonIcon.style.color = 'var(--card-bg)'; // Hide the moon
                 localStorage.setItem('theme', 'dark');
             } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+                sunIcon.style.color = 'var(--card-bg)'; // Hide the sun
+                moonIcon.style.color = 'var(--text-color)'; // Make the moon visible
                 localStorage.setItem('theme', 'light');
             }
         });
 
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            themeIcon.classList.remove('fa-moon');
-            themeIcon.classList.add('fa-sun');
+        // Check for saved theme preference and initialize icon colors
+        function initializeTheme() {
+            const isDarkMode = localStorage.getItem('theme') === 'dark';
+            const sunIcon = document.querySelector('.theme-switch-wrapper .fa-sun');
+            const moonIcon = document.querySelector('.theme-switch-wrapper .fa-moon');
+            const toggleCheckbox = document.getElementById('theme-toggle');
+
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                toggleCheckbox.checked = true;
+                sunIcon.style.color = 'var(--text-color)';
+                moonIcon.style.color = 'var(--card-bg)';
+            } else {
+                sunIcon.style.color = 'var(--card-bg)';
+                moonIcon.style.color = 'var(--text-color)';
+            }
         }
+        
+        initializeTheme();
+
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -846,8 +858,8 @@
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
         });
-    
-   </script>
+
+    </script>
 </body>
 
 </html>
